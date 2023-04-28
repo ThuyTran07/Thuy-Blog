@@ -83,7 +83,7 @@ def admin_only(f):
 @app.route('/')
 def get_all_posts():
     posts = BlogPost.query.all()
-    return render_template("index.html", all_posts=posts, logged_in=current_user.is_authenticated)
+    return render_template("index.html", all_posts=posts, current_user=current_user)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -162,12 +162,12 @@ def show_post(post_id):
 
 @app.route("/about")
 def about():
-    return render_template("about.html", logged_in=current_user.is_authenticated)
+    return render_template("about.html", current_user=current_user)
 
 
 @app.route("/contact")
 def contact():
-    return render_template("contact.html", logged_in=current_user.is_authenticated)
+    return render_template("contact.html", current_user=current_user)
 
 
 @app.route("/new-post", methods=['GET', 'POST'])
@@ -187,7 +187,7 @@ def add_new_post():
         db.session.add(new_post)
         db.session.commit()
         return redirect(url_for("get_all_posts"))
-    return render_template("make-post.html", form=form, logged_in=current_user.is_authenticated)
+    return render_template("make-post.html", form=form, current_user=current_user)
 
 
 @app.route("/edit-post/<int:post_id>", methods=['GET', 'POST'])
@@ -210,7 +210,7 @@ def edit_post(post_id):
         db.session.commit()
         return redirect(url_for("show_post", post_id=post.id))
     else:
-        return render_template("make-post.html", form=edit_form, logged_in=current_user.is_authenticated, is_edit=True)
+        return render_template("make-post.html", form=edit_form, current_user=current_user, is_edit=True)
 
 
 @app.route("/delete/<int:post_id>")
